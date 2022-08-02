@@ -1,91 +1,39 @@
 "use strict";
 
+// "use strict";
 // declare our settings
 // this is the new release endpoint
-// const endpointURL = "https://api.spotify.com/v1/browse/new-releases";
-// this is the search endpoint
-var endpointURL = "https://api.spotify.com/v1/search?q=milesdavis&type=track";
-var token = "BQArOLMTKbe4WtttDJhB6gb0MHKUqWNO5uAvN35r8DUcW_Ptxgx7qKj0M86GkmxhXJxVxfoTMrfSzZ6iol76x51znupqEOyaAVsIKzLpwS_NK2j9eWkxnhkMNDGDA_E4l5o0ZknUXKThBLNgBcH-XjMn3DpVPvzQ_GTnj6RZhGPGcL8";
+var headliner = document.getElementById("headliner");
+var endpointURL = "https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=";
+var token = "97GC6qqtO5nSA3mSo3GJE1yc6uQ4DLbI";
 
-var showMusic = function showMusic(music) {
+var showNews = function showNews(articles) {
   console.log("this is running!");
 
-  var renderArtists = function renderArtists(artists) {
-    var allArtists = [];
-    artists.forEach(function (item) {
+  var renderArticles = function renderArticles(articles) {
+    var allArticles = [];
+    articles.forEach(function (item) {
       // console.log(item.name);
-      allArtists.push(item.name);
-      console.log(item.popularity);
-    });
-    return allArtists.join(", ");
-  }; // Activity: show the artists with a space between each name.
+      allArticles.push(item.name);
+    }); // how to put a commer between parameters
+    // return allArticles.join(", ");
+  };
 
-
-  music.forEach(function (item) {
+  articles.forEach(function (item) {
     // this function will run for each item
     console.log(item);
-    var endMS = new Date(item.duration_ms);
-    popularity = item.popularity;
-
-    switch (true) {
-      case dogs == 0:
-        console.log("You don't own any dogs, my dude or dudette.");
-        break;
-
-      case dogs > 0 && dogs <= 3:
-        console.log("You're a dog owner.");
-        break;
-
-      case dogs > 3 && dogs < 20:
-        console.log("You've got heaps of dogs.");
-        break;
-
-      case dogs > 100:
-        console.log("You're obsessed with dogs!");
-        break;
-
-      default:
-        console.log("Can't recognise your dogs");
-        break;
-    }
-
-    calculateMS = function calculateMS() {
-      return "".concat(endMS.getMinutes(), ":").concat(calcSecs());
-    };
-
-    calcSecs = function calcSecs(calculateMS) {
-      switch (true) {
-        case endMS.getSeconds() < 10:
-          return "0".concat(endMS.getSeconds());
-
-        default:
-          return "".concat(endMS.getSeconds());
-      }
-    };
-
-    result.innerHTML += "\n        <div>\n        <img alt=\"album-art\" src=\"".concat(item.album.images[0].url, "\">\n        <h2>").concat(item.name, "</h2>\n        <h3>").concat(renderArtists(item.artists), "</h3>\n        <p>").concat(calculateMS(), "</p>\n        <p>").concat(item.popularity, "</p>\n        </div >\n    ");
+    result.innerHTML += "\n    <div class=\"article-grid\">\n    <img src=\"".concat(item.media[0]["media-metadata"][2].url, "\" alt=\"yay\">\n    <h4>").concat(item.title, "</h4>\n  <p>").concat(item["abstract"], "</p>\n  </div>\n    ");
   });
-}; // Activity: Show the album/single names in a grid
-// Show the album cover.
-// Show whether the track is an album or a single.
-// Use a different color to render the label
-
+};
 
 $.ajax({
-  url: endpointURL,
+  url: endpointURL + token,
   type: "GET",
-  // headers are a way to send identifying infomation
-  // about yourself to the server
-  headers: {
-    Authorization: "Bearer " + token
-  },
   success: function success(data) {
-    // console.log(data);
-    // console.log(data.tracks.items);
-    showMusic(data.tracks.items);
+    showNews(data.results);
+    console.log(data.results);
   },
   error: function error(_error) {
     console.log(_error);
   }
-}); // Activity:
-// Show the Miles Davis tracks on the screen, with the album covers.
+});
