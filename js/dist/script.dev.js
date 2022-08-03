@@ -11,7 +11,6 @@ var showNews = function showNews(articles) {
   console.log("this is running!");
 
   var renderArticles = function renderArticles(articles) {
-    var allArticles = [];
     articles.forEach(function (item) {
       // console.log(item.name);
       allArticles.push(item.name);
@@ -21,10 +20,18 @@ var showNews = function showNews(articles) {
 
   articles.forEach(function (item) {
     // this function will run for each item
-    console.log(item);
-    result.innerHTML += "\n    <div class=\"article-grid\">\n    <img src=\"".concat(item.media[0]["media-metadata"][2].url, "\" alt=\"yay\">\n    <h4>").concat(item.title, "</h4>\n  <p>").concat(item["abstract"], "</p>\n  </div>\n    ");
+    var generateImage = function generateImage() {
+      if (item.media[0]) {
+        return item.media[0]["media-metadata"][2].url;
+      } else {
+        return "https://static-prod.adweek.com/wp-content/uploads/2020/03/nytimes-building-content-2020.jpg";
+      }
+    };
+
+    result.innerHTML += "\n    <div class=\"article-card\">\n    <img src=\"".concat(generateImage(), "\" alt=\"yay\">\n    \n    <div class=\"article-description\">\n    <a href=\"").concat(item.url, "\">\n    <h4>").concat(item.title, "</h4>\n  <p class=\"abstract\">").concat(item["abstract"], "</p>\n  <div class=\"section\">\n  <p>").concat(item.section, "<p>\n  </div>\n  <div class=\"published_date\">\n  <p>").concat(item.published_date, "<p>\n  </a>\n  </div>\n \n  </div>\n  \n    ");
   });
-};
+}; // };
+
 
 $.ajax({
   url: endpointURL + token,
